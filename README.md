@@ -31,3 +31,40 @@ docker-compose up -d
 
 In order to stop it we use the `docker-compose stop` command.
 
+## Produce and Consume
+
+Now we produce and consume a `Hello world!` message.
+
+```bash
+@SpringBootApplication
+public class SpringBootRabbitmqApplication {
+
+	private static final String MY_QUEUE_NAME = "myQueue";
+	private static final boolean DURABLE = true;
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringBootRabbitmqApplication.class, args);
+	}
+
+
+	@Bean
+	public ApplicationRunner runner(RabbitTemplate template) {
+		return args -> {
+			System.out.println("Send message to queue");
+			template.convertAndSend(MY_QUEUE_NAME, "Hello, world!");
+		};
+	}
+
+	@Bean
+	public Queue myQueue() {
+		return new Queue(MY_QUEUE_NAME, DURABLE);
+	}
+
+
+	@RabbitListener(queues = MY_QUEUE_NAME)
+	public void listen(String message) {
+		System.out.println("Read message from queue: " + message);
+	}
+
+}
+```
