@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  rabbitmq:
+    hostname: my-rabbit
+    image: rabbitmq:3.12-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
