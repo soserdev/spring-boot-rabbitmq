@@ -1,5 +1,8 @@
 package io.eyce.rabbitmq;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -9,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@Slf4j
 public class SpringBootRabbitmqApplication {
 
 	private static final String MY_QUEUE_NAME = "myQueue";
@@ -18,11 +22,10 @@ public class SpringBootRabbitmqApplication {
 		SpringApplication.run(SpringBootRabbitmqApplication.class, args);
 	}
 
-
 	@Bean
 	public ApplicationRunner runner(RabbitTemplate template) {
 		return args -> {
-			System.out.println("Send message to queue");
+			log.info("Send message to queue");
 			template.convertAndSend(MY_QUEUE_NAME, "Hello, world!");
 		};
 	}
@@ -35,7 +38,7 @@ public class SpringBootRabbitmqApplication {
 
 	@RabbitListener(queues = MY_QUEUE_NAME)
 	public void listen(String message) {
-		System.out.println("Read message from queue: " + message);
+		log.info("Read message from queue: " + message);
 	}
 
 }
