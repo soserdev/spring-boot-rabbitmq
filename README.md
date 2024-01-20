@@ -29,7 +29,13 @@ We start it using the following command.
 docker-compose up -d
 ```
 
-In order to stop it we use the `docker-compose stop` command.
+Now we can access the Management-Console [http://localhost:15672](http://localhost:15672). The default user and password are `guest` and `guest`.
+
+In order to stop our RabbitMQ we use the following command.
+
+```bash
+docker-compose stop
+```
 
 ## Produce and Consume
 
