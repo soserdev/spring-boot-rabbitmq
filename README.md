@@ -51,7 +51,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
 ```
 
 We start it using the following command.
