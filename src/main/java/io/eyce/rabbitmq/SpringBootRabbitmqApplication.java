@@ -1,6 +1,5 @@
 package io.eyce.rabbitmq;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -12,8 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@Slf4j
 public class SpringBootRabbitmqApplication {
+
+	private static final Logger log = LoggerFactory.getLogger(SpringBootRabbitmqApplication.class);
 
 	private static final String MY_QUEUE_NAME = "myQueue";
 	private static final boolean DURABLE = true;
@@ -38,7 +38,7 @@ public class SpringBootRabbitmqApplication {
 
 	@RabbitListener(queues = MY_QUEUE_NAME)
 	public void listen(String message) {
-		log.info("Read message from queue: " + message);
+        log.info("Read message from queue: {}", message);
 	}
 
 }
