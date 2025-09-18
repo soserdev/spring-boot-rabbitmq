@@ -1,4 +1,4 @@
-package io.eyce.rabbitmq;
+package dev.smo.rabbitmq;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

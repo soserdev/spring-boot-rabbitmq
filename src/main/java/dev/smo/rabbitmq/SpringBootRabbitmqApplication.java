@@ -1,4 +1,4 @@
-package io.eyce.rabbitmq;
+package dev.smo.rabbitmq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
