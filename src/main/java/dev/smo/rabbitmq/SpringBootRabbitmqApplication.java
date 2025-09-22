@@ -1,9 +1,11 @@
 package dev.smo.rabbitmq;
 
+import dev.smo.rabbitmq.service.MessageProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,8 +23,11 @@ public class SpringBootRabbitmqApplication {
 	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
 
-	@Value("${rabbitmq.queue.name}")
-	private  String queueName;
+	@Value("${rabbitmq.routing.key}")
+	private String routingKey;
+
+	@Autowired
+	MessageProducerService messageProducerService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootRabbitmqApplication.class, args);
@@ -33,10 +38,9 @@ public class SpringBootRabbitmqApplication {
 		return args -> {
 			var now = LocalDateTime.now();
 			var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-			var message = String.format("Topic exchange: '%s' - Queue name: '%s' - At: '%s'", exchangeName, queueName, now.format(formatter));
-			// For topic exchange use queue name
-			log.info("SENDING MESSAGE: " + message);
-			template.convertAndSend(queueName, message);
+			var messageToSend = String.format("Exchange: '%s' - Routing Key: '%s' - At: '%s'", exchangeName, routingKey, now.format(formatter));
+
+			messageProducerService.send(routingKey, messageToSend);
 		};
 	}
 
