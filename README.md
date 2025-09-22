@@ -2,6 +2,16 @@
 
 This is a Simple Demo WebApp that shows how to implement RabbitMQ using Spring Boot.
 
+## Rest API Usage
+
+This sample app offers a RESTful API to send messages to a RabbitMQ Consumer.
+
+```bash
+curl -X POST http://localhost:8080/api/v1/send/topic.routing.key \
+     -H "Content-Type: text/plain" \
+     -d "My message no.1"
+```
+
 ## About RabbitMQ and Asynchronous Messaging
 
 **RabbitMQ** is an open-source message broker software that helps applications communicate with each other by sending
