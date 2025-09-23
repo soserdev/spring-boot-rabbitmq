@@ -15,19 +15,20 @@ public class RabbitMQConfig {
 
     private static final Logger log = LoggerFactory.getLogger(RabbitMQConfig.class);
 
-    @Value("${rabbitmq.queue.name}")
-    private String queueName;
-
-    @Value("${rabbitmq.exchange.name}")
+    @Value("${rabbitmq.exchange}")
     private String exchangeName;
 
-    @Value("${rabbitmq.binding.key}")
-    private String bindingKey;
+    @Value("${rabbitmq.queue.one}")
+    private String queueNameOne;
 
-    @Bean
-    public Queue queue() {
-        return new Queue(queueName);
-    }
+    @Value("${rabbitmq.queue.two}")
+    private String queueNameTwo;
+
+    @Value("${rabbitmq.binding.one}")
+    private String bindingNameOne;
+
+    @Value("${rabbitmq.binding.two}")
+    private String bindingNameTwo;
 
     @Bean
     public TopicExchange exchange() {
@@ -35,9 +36,25 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding binding() {
-        log.info("CREATED BINDING for queue '{}' to '{}' with binding key '{}'", queueName, exchangeName, bindingKey);
-        return BindingBuilder.bind(queue()).to(exchange()).with(bindingKey);
+    public Queue queueOne() {
+        return new Queue(queueNameOne);
+    }
+
+    @Bean
+    public Queue queueTwo() {
+        return new Queue(queueNameTwo);
+    }
+
+    @Bean
+    public Binding bindingOne(Queue queueOne) {
+        log.info("CREATED BINDING for QUEUE ONE '{}' to '{}' with binding key '{}'", queueNameOne, exchangeName, bindingNameOne);
+        return BindingBuilder.bind(queueOne).to(exchange()).with(bindingNameOne);
+    }
+
+    @Bean
+    public Binding bindingTwo(Queue queueTwo) {
+        log.info("CREATED BINDING for QUEUE TWO '{}' to '{}' with binding key '{}'", queueNameTwo, exchangeName, bindingNameTwo);
+        return BindingBuilder.bind(queueTwo).to(exchange()).with(bindingNameTwo);
     }
 
 }

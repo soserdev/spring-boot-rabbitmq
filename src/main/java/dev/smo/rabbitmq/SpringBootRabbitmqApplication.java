@@ -15,9 +15,15 @@ public class SpringBootRabbitmqApplication {
 		SpringApplication.run(SpringBootRabbitmqApplication.class, args);
 	}
 
-	@RabbitListener(queues = "${rabbitmq.queue.name}")
-	public void listen(String message) {
-        log.info("RECEIVED MESSAGE: {}", message);
+	@RabbitListener(queues = "${rabbitmq.queue.one}")
+	public void listenQueueOne(String message) {
+		// Receives all payment.* messages like payment.success
+        log.info("QUEUE ONE - RECEIVED MESSAGE: {}", message);
 	}
 
+	@RabbitListener(queues = "${rabbitmq.queue.two}")
+	public void listenQueueTwo(String message) {
+		// Receives all #.error messages like payment.system.error
+		log.info("QUEUE TWO - RECEIVED MESSAGE: {}", message);
+	}
 }

@@ -13,10 +13,10 @@ import java.time.format.DateTimeFormatter;
 public class SendMessageController {
 
 
-    @Value("${rabbitmq.exchange.name}")
+    @Value("${rabbitmq.exchange}")
     private String exchangeName;
 
-    @Value("${rabbitmq.routing.key}")
+    @Value("${rabbitmq.routing.one}")
     private String routingKey;
 
     @Autowired
