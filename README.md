@@ -6,43 +6,37 @@ This is a Simple Demo WebApp that shows how to implement RabbitMQ using Spring B
 ## About RabbitMQ and Asynchronous Messaging
 
 **RabbitMQ** is an open-source message broker software that helps applications communicate with each other by sending
-and receiving messages in a reliable, asynchronous, and scalable way. _It works like a Post Office in the Cloud - see [RabbitMQ in 100 Seconds](https://www.youtube.com/watch?v=NQ3fZtyXji0)_. It acts as a middleman between different services
-in a distributed system, enabling decoupling of components.
+and receiving messages in a reliable, asynchronous, and scalable way.
 
->_Asynchronous messaging_ is a way of indirectly sending messages 
+**RabbitMQ** acts as a middleman between services in a distributed system, enabling decoupling of components.
+
+**Asynchronous messaging** allows applications to send messages 
 from one application to another without waiting for a response. 
-This indirection affords looser coupling and greater scalability 
-between the communicating applications. _(Spring in Action 6th ed - Manning)_
-
-## How it works
-
-As perhaps the most widely used implementation of the **Advanced Message Queuing Protocol (AMQP)**, RabbitMQ provides a more
-flexible message-routing mechanism than **JMS** (**Java Messaging Protocol**). In JMS, messages are sent directly to a 
-named destination, such as a **Queue** or a **Topic**, from which the receiver consumes them. 
-
-In contrast, AMQP messages are published to an **Exchange** using a **Routing Key**, which is independent of the queues 
-that receive the messages. This decouples message production from consumption, allowing for more advanced routing configurations.
 
 ## Components in RabbitMQ
 
 Before getting into binding types, let's understand the basic components.
 
-* **Producer** sends messages to an **Exchange**.
-* **Exchange**: Receives messages from producers and routes them to queues based on rules called **bindings**.
-* **Consumer**: The message sits in the Queue until it is handled by a **Consumer**.
-* **Queue**: Stores messages until they are consumed by a **Consumer**.
-* **Binding**: A link between an exchange and a queue, optionally including a **routing key** (**binding key**).
-* **Routing Key**: A string used by the exchange to decide how to route the message.
+* **Producer** Sends messages to **Exchange**.
+* **Exchange**: Routes messages to queues based on rules called **bindings**.
+* **Queue**: Stores messages until they are consumed.
+* **Consumer**: Receives messages from a **Queue**.
+* **Binding**: Is a link between an **Exchange** and a **Queue**, optionally including a **routing key**.
+
+We also call the **routing key** in a binding as a **binding key**.
 
 ## Binding Types
 
-There a several kinds of **Binding Types**.
+**Messages** are routed depending upon the Exchange, the Binding between the Exchange and the Queue, and the messages Routing Key.
 
-- **Default**
+There a several kinds of **Binding Types**. 
+
 - **Direct** — Routes messages to a specific Queue with a **Binding Key** that matches exactly the messages **Routing Key**.
-- **Topic** — Routes a message to one or more queues based upon **Binding Keys** that contain a **pattern** which are **wildcards** like `*` and `#`.
-- **Fanout** — Broadcasts messages to all bound queues without regard for binding keys or routing keys.
+- **Topic** — Routes a message to one or more Queues based upon the **Binding Keys** that contain a **pattern** which are **wildcards** like `*` and `#`.
+- **Fanout** — Broadcasts messages to all bound Queues without regard for binding keys or routing keys.
 - **Headers** — Routes messages based on the message headers.
+
+There is also a **Default** Binding Type, that RabbitMQ offers to route messages based on the name of the Queue. 
 
 
 ## Start RabbitMQ
@@ -341,8 +335,8 @@ If we use `payment.error` as a routing key, both Queues **Queue One** and **Queu
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/send/payment.error \
--H "Content-Type: text/plain" \
--d "Payment with id:123 error"
+     -H "Content-Type: text/plain" \
+     -d "Payment with id:123 error"
 ```
 
 And if we use `payment.error` as a routing key, only **Queue Two** will receive the message.
